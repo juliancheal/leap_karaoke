@@ -1,5 +1,4 @@
 require 'artoo'
-require 'vlc-client'
 
 class DaftPunkBot < Artoo::Robot
 
@@ -7,7 +6,6 @@ class DaftPunkBot < Artoo::Robot
   device :leapmotion, :driver => :leapmotion
 
   def initialize
-    @lyrics = ["Work It", "Make It", "Do It", "Makes Us", "Harder", "Better", "Faster", "Stronger", "More Than", "Hour", "Our", "Never", "Ever", "After", "Work is" , "Over"]
     super
   end
 
@@ -22,12 +20,9 @@ class DaftPunkBot < Artoo::Robot
 
 
   def on_open(*args)
-  pid = fork{ exec 'afplay', "audio/harder_better_faster_stronger.mp3" }
+    system "afplay audio/harder_better_faster_stronger.mp3 &"
 
-  @vlc = VLC::System.new
-  @vlc.connect
-  @vlc.volume(200)
-  @songs = %w{ work_it.wav 
+    @songs = %w{ work_it.wav 
               make_it.wav
               do_it.wav
               makes_us.wav
@@ -48,7 +43,6 @@ class DaftPunkBot < Artoo::Robot
 
 
   def on_close(*args)
-    @vlc.disconnect
   end
 
   def on_gesture(*args)
@@ -56,10 +50,9 @@ class DaftPunkBot < Artoo::Robot
     puts gesture.type
     case gesture.type
       when "keyTap"
-        song = "audio/#{@songs.shift}"
+        song = "audio/#{(@songs.push @songs.shift).last}"
         puts song
-        @vlc.clear
-        @vlc.play(song) unless @vlc.playing?
+        system "afplay #{song} &"
     end
   end
 end

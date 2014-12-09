@@ -6,7 +6,6 @@ class DaftPunkBot < Artoo::Robot
   device :keyboard, driver: :keyboard, connection: :keyboard
 
   def initialize
-    @lyrics = ["Work It", "Make It", "Do It", "Makes Us", "Harder", "Better", "Faster", "Stronger", "More Than", "Hour", "Our", "Never", "Ever", "After", "Work is" , "Over"]
     super
   end
 
@@ -24,9 +23,6 @@ class DaftPunkBot < Artoo::Robot
   def start
     system "afplay audio/harder_better_faster_stronger.mp3 &"
 
-    # @vlc = VLC::System.new
-    # @vlc.connect
-    # @vlc.volume(200)
     @songs = %w{ work_it.wav
               make_it.wav
               do_it.wav
